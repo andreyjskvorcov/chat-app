@@ -21,12 +21,39 @@ const messages = [
     },
   },
 ];
+
+const { $socket } = useNuxtApp();
+
+onMounted(() => {
+  if (!$socket) {
+    console.error('Socket не найден');
+    return;
+  }
+
+  $socket.on('message', (data) => {
+    console.log('Получено:', data);
+  });
+});
+
+function send() {
+  if (!$socket) return;
+
+  $socket.emit('message', {
+    id: Date.now(),
+    text: 'Новое сообщение',
+    time: '12:00',
+  });
+
+  console.log('send');
+}
 </script>
 
 <template>
   <div class="flex h-full flex-col border rounded-xl bg-background">
     <!-- Header -->
-    <div class="border-b px-4 py-3 font-semibold">Дотики</div>
+    <div class="border-b px-4 py-3 font-semibold cursor-pointer" @click="send">
+      Дотики
+    </div>
 
     <!-- Messages -->
     <div class="flex-1 overflow-y-auto p-4 space-y-4">
