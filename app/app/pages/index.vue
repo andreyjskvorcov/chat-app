@@ -25,26 +25,16 @@ const messages = [
 const { $socket } = useNuxtApp();
 
 onMounted(() => {
-  if (!$socket) {
-    console.error('Socket не найден');
-    return;
-  }
-
   $socket.on('message', (data) => {
     console.log('Получено:', data);
   });
 });
 
 function send() {
-  if (!$socket) return;
-
   $socket.emit('message', {
     id: Date.now(),
-    text: 'Новое сообщение',
-    time: '12:00',
+    text: 'Привет',
   });
-
-  console.log('send');
 }
 </script>
 
